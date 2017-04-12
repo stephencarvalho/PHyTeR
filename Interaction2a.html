@@ -1,127 +1,28 @@
 <html>
 <head>
 	<title>Network</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-	<style type="text/css">
-		.close{
-			float:right;
-		}
-		.modal-content{
-			background-color: #3366ff;
-		}
-		.modal-header{
-			color: white;
-			font-weight: 700;
-			font-size: 20px;
-		}
-		.modal-body{
-			font-size: 17px;
-		}
-		#functions{
-			background-color: white;
-			border:1px solid white;
-			border-radius: 5px;
-			margin: 9px;
-			height: 25px;
-			width:200px;
-		}
-		.addFunc{
-			border:1px solid white;
-			background-color: #3366ff;
-			color:white;
-			border-radius:5px;
-			margin:9px;
-			padding-left: 8px;
-			padding-right: 8px;
-			padding-top: 5px;
-			padding-bottom: 5px;
-		}
-		.addFunc:hover{
-			background-color: white;
-			color:#3366ff;
-		}
-		.funcBox{
-			border:1px solid white;
-			border-radius: 5px;
-			height: 25px;
-			width:270px;
-			padding-left: 5px;
-			padding-right: 2px;
-		}
-		.footer{
-			float: right;
-			margin:2%;
-			border: 1px solid white;
-			color: white;
-			background-color: #3366ff;
-			border-radius: 5px;
-			font-size: 15px;
-			font-weight: 700;
-			width: 100px;
-			height: 30px;
-		}
-		.footer:hover{
-			background-color: white;
-			color:#3366ff;
-		}
-	</style>
-	<script type="text/javascript">
-		obj={
-			init:function(){
-				//hide the Add Function button
-				$(".addFunc").hide();
-				
-
-				$("#functions").change(function(){
-					var value = $(this).find("option:selected").attr("value");
-					if(value==""){return}
-						console.log("called");
-					if($(".funcBox").length==0){
-						var details = $(document.createElement('input'));
-						details.attr("placeholder","Why is this feature needed?");
-						details.attr("class","funcBox");
-						$("#function").append(details);
-						$(".addFunc").show();
-					}
-					switch(value){
-						case "NAT":
-						case "IP":
-						case "":break;
-					}
-				});
-
-				$("#myModal").on("hidden.bs.modal",function(){
-					$("#myModal").remove();
-					$("body").append(obj.modalOriginal);
-					obj.init(); //To re-add all the event listeners
-				});
-				obj.modalOriginal = $("#myModal").clone();
-			},
-			//Add a new function
-			addFunc:function(){
-				var func = $("#function").clone();
-				$("#functionSet").append(func);		
-			},
-			//Original structure of modal is stored on init to restore it to this state on closing
-			modalOriginal:null
-		}
-	</script>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/Interaction2.js"></script>
 </head>
 <body onload="obj.init()">
-	<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Functions</button>
-	<div class="modal fade" id="myModal" role="dialog">
+	<div id="menu">
+		<button type="button" id="item1" data-toggle="modal" data-target="#func">Functions</button>
+		<button type="button" id="item2" data-toggle="modal" data-target="#func">Add Hypothesis</button>
+	</div>
+	<img src="images/problem1-topology.png" class="selected">
+	<div class="modal fade" id="func" role="dialog">
 		<div class="modal-dialog modal-md">
 			<div class="modal-content">
 				<div class="modal-header">
-					Functions of a terminal
+					<span id="modal-header-name">Functions of a terminal</span>
 					<button type="button" class="btn btn-default close" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
 				</div>
 				<div class="modal-body">
 					<div>
-						Select the functions that should be accurate so that the terminal works correctly:
+						<span id="question-message">Select the functions that should be accurate so that the terminal works correctly:</span>
 					</div>
 					<div id="functionSet">
 						<div id="function">
@@ -139,6 +40,7 @@
 				<div class="modal-footer">
 					<button type="button" class="footer" data-dismiss="modal">Save</button>
 					<button type="button" class="footer" data-dismiss="modal">Hints</button>
+					<button type="button" class="footer" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>
