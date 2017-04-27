@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>PHyTeR</title>
+
+    <link href="C:/Users/Mathanky/Mathanky_files/IITB/PHyTeR-master/css/bootstrap.min.css" rel="stylesheet">
+    <link href="C:/Users/Mathanky/Mathanky_files/IITB/PHyTeR-master/css/style.css" rel="stylesheet">
+	<script type="text/javascript">
+		mxBasePath = 'mxgraph-master/javascript/src';
+	</script>
+
+	<!-- Loads and initializes the library -->
+	<script type="text/javascript" src="C:/Users/Mathanky/Mathanky_files/IITB/mxgraph-master/javascript/src/js/mxClient.js"></script>
+
+	<!-- Example code -->
+	<script type="text/javascript">
+		// Program starts here. Creates a sample graph in the
+		// DOM node with the specified ID. This function is invoked
+		// from the onLoad event handler of the document (see below).
+		function main()
+		{
+			// Checks if the browser is supported
+			if (!mxClient.isBrowserSupported())
+			{
+				// Displays an error message if the browser is not supported.
+				mxUtils.error('Browser is not supported!', 200, false);
+			}
+			else
+			{
+				// Enables guides
+				mxGraphHandler.prototype.guidesEnabled = true;
+				
+			    // Alt disables guides
+			    mxGuide.prototype.isEnabledForEvent = function(evt)
+			    {
+			    	return !mxEvent.isAltDown(evt);
+			    };
+				
+				// Enables snapping waypoints to terminals
+				mxEdgeHandler.prototype.snapToTerminals = true;
+				
+				var graphs = [];
+				
+				// Creates the graph inside the given container
+				for (var i = 0; i < 1; i++)
+				{
+					var working_space_title=document.getElementById('working_space_title');
+					var rect=working_space_title.getBoundingClientRect();
+					var container = document.createElement('div');
+					container.style.overflow = 'hidden';
+					container.style.position = 'absolute';
+					container.style.top="210px";
+					container.style.left="250px";
+					container.style.width = '692px';
+					container.style.height = '390px';
+					container.style.backgroundImage = 'url("C:/Users/Mathanky/Mathanky_files/IITB/grid2.png")';
+					container.style.backgroundRepear="no-repeat";
+					container.style.cursor = 'default';
+
+					document.body.appendChild(container);
+					
+					var graph = new mxGraph(container);
+					graph.gridSize = 100;
+					
+					// Uncomment the following if you want the container
+					// to fit the size of the graph
+					//graph.setResizeContainer(true);
+					
+					// Enables rubberband selection
+					new mxRubberband(graph);
+			
+					// Gets the default parent for inserting new cells. This
+					// is normally the first child of the root (ie. layer 0).
+					configureStylesheet(graph);
+					var parent = graph.getDefaultParent();
+					// Adds cells to the model in a single step
+					graph.getModel().beginUpdate();
+					try
+					{
+						//var v1 = graph.insertVertex(parent, null, "", 20, 20, 80, 30,"shape=label;image=client.png;imageWidth=30;imageHeight=30;spacingBottom=0;");
+						//var v2 = graph.insertVertex(parent, null, 'World!', 200, 150, 80, 30);
+						//var e1 = graph.insertEdge(parent, null, '', v1, v2);
+						var v1 = graph.insertVertex(parent, null, '', 20, 170, 80, 100, 'client1');
+						var v2 = graph.insertVertex(parent, null, '', 500, 170, 80, 100, 'client2');
+						var v3 = graph.insertVertex(parent, null, '', 230, 30, 100, 100, 'router');
+						var e1 = graph.insertEdge(parent, null, '', v1, v3);
+						var e2 = graph.insertEdge(parent, null, '', v2, v3);
+					}
+					finally
+					{
+						// Updates the display
+						graph.getModel().endUpdate();
+					}
+					graphs.push(graph);
+					var flag=0;
+					graph.addMouseListener(
+					{
+					  mouseDown: function(sender, evt)
+					  {
+						flag=1;
+					  },
+					  mouseMove: function(sender, evt)
+					  {
+						if(flag==1)
+						{
+							var v1 = graph.insertVertex(parent, null, '', evt.graphX, evt.graphY, 2, 2, 'point');
+						}
+					  },
+					  mouseUp: function(sender, evt)
+					  {
+						flag=0;
+						mxLog.debug('mouseUp');
+					  }
+					});
+				}
+				
+				function configureStylesheet(graph)
+				{
+					var style = new Object();
+					style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+					style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
+					style[mxConstants.STYLE_IMAGE] = 'router1.svg';
+					style[mxConstants.STYLE_FONTCOLOR] = '#FFFFFF';
+					graph.getStylesheet().putCellStyle('router', style);
+					
+					style=mxUtils.clone(style);
+					style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+					style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
+					style[mxConstants.STYLE_IMAGE] = 'client1.svg';
+					style[mxConstants.STYLE_FONTCOLOR] = '#FFFFFF';
+					graph.getStylesheet().putCellStyle('client1', style);
+					
+					style=mxUtils.clone(style);
+					style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+					style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
+					style[mxConstants.STYLE_IMAGE] = 'client1.svg';
+					style[mxConstants.STYLE_FONTCOLOR] = '#FFFFFF';
+					graph.getStylesheet().putCellStyle('client2', style);
+					
+					style=mxUtils.clone(style);
+					style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+					style[mxConstants.STYLE_PERIMETER] = mxPerimeter.RectanglePerimeter;
+					style[mxConstants.STYLE_IMAGE] = 'point.svg';
+					style[mxConstants.STYLE_FONTCOLOR] = '#FFFFFF';
+					graph.getStylesheet().putCellStyle('point', style);
+					
+					
+				};
+				
+				// Returns the graph under the mouse
+				var graphF = function(evt)
+				{
+					var x = mxEvent.getClientX(evt);
+					var y = mxEvent.getClientY(evt);
+					var elt = document.elementFromPoint(x, y);
+					
+					for (var i = 0; i < graphs.length; i++)
+					{
+						if (mxUtils.isAncestorNode(graphs[i].container, elt))
+						{
+							return graphs[i];
+						}
+					}
+					
+					return null;
+				};
+				
+			}
+			
+		};
+	</script>
+  </head>
+  <body onload="main()">
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+				<h1>
+					PHyTeR <small>Troubleshooting Computer Networks</small>
+				</h1>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-2">
+					<div class="list-group">
+						 <a href="#" class="list-group-item active">Home</a>
+						<div class="list-group-item">
+							Networks
+						</div>
+						<div class="list-group-item">
+							Forum
+							<span class="badge">14</span>
+							<!-- <h4 class="list-group-item-heading">
+								List group item heading
+							</h4>
+							<p class="list-group-item-text">
+								...
+							</p> -->
+						</div>
+					</div>
+				</div>
+				<div class="col-md-10">
+					<div class="row">
+						<div class="col-md-8">
+							<p>
+								Task Description
+							</p>
+						</div>
+						<div class="col-md-4">
+							 <a id="modal-tsHistory" href="#modal-container-tsHistory" role="button" class="btn" data-toggle="modal">Troubleshooting History</a>
+							
+							<div class="modal fade" id="modal-container-tsHistory" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											 
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+												×
+											</button>
+											<h4 class="modal-title" id="myModalLabel">
+												Modal title
+											</h4>
+										</div>
+										<div class="modal-body">
+											...
+										</div>
+										<div class="modal-footer">
+											 
+											<button type="button" class="btn btn-default" data-dismiss="modal">
+												Close
+											</button> 
+											<button type="button" class="btn btn-primary">
+												Save changes
+											</button>
+										</div>
+									</div>
+									
+								</div>
+								
+							</div>
+							
+							 <a id="modal-hints" href="#modal-container-hints" role="button" class="btn" data-toggle="modal">Hints</a>
+							
+							<div class="modal fade" id="modal-container-hints" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											 
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+												×
+											</button>
+											<h4 class="modal-title" id="myModalLabel">
+												Modal title
+											</h4>
+										</div>
+										<div class="modal-body">
+											...
+										</div>
+										<div class="modal-footer">
+											 
+											<button type="button" class="btn btn-default" data-dismiss="modal">
+												Close
+											</button> 
+											<button type="button" class="btn btn-primary">
+												Save changes
+											</button>
+										</div>
+									</div>
+									
+								</div>
+								
+							</div>
+							
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-8" id="working_space_title">
+							<p> Working space for annotating topology</p>
+						</div>
+						<div class="col-md-4">
+							<p>Working space for prioritizing hypotheses</p>
+						</div>
+					</div>
+					<div class="row" style="position:absolute;top:520px">
+						<div class="col-md-8">
+							<p>
+								Problem Description
+							</p>
+						</div>
+						<div class="col-md-4">
+							<img alt="Bootstrap Image Preview" src="./images/problem1-topology.png">
+						</div>
+					</div>
+					<div class="btn-group btn-group-md" style="position:absolute;top:790px" >
+						 
+						<button class="btn btn-default active" type="button">
+							<em class="glyphicon glyphicon-align-left"></em> Annotated Topology View
+						</button> 
+						<button class="btn btn-default" type="button">
+							<em class="glyphicon glyphicon-align-center"></em> Test this Hypothesis
+						</button> 
+						<button class="btn btn-default" type="button">
+							<em class="glyphicon glyphicon-align-right"></em> Compare with an Expert
+						</button> 
+						<button class="btn btn-default" type="button">
+							<em class="glyphicon glyphicon-align-justify"></em> Reflect Troubleshooting Process
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+		</div>
+	</div>
+</div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+  </body>
+</html>
