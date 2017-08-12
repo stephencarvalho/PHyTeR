@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" 
+	rel = "stylesheet">
+	<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	<style type="text/css">
+		.task {
+			height: 30px;
+			z-index: 1;
+		}
+		.panel-body div {
+			min-width: 500px;
+			min-height: 20px;
+		}
+		.panel-body div.hovered {
+			border: rgba(0, 253, 0, 0.3);
+		}
+	}
+</style>
+</head>
+<body>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="panel panel-info">
+				<div class="panel-heading"> Tasks </div>
+				<div class="panel-body " id="tasks">
+					<div class="panel panel-danger" id="t1">
+						<div id="t1_1" class="task panel-heading panel-body">
+							Understand the broad level working of the system
+						</div>
+					</div>
+					<div class="panel panel-danger" id="t1">
+						<div id="t1_2" class="task panel-heading panel-body">
+							Understand the devices which are required for working of the system
+						</div>
+					</div>
+					<div class="panel panel-danger" id="t2">
+						<div id="t2_1" class="task panel-heading panel-body">
+							Come up with plausible causes for error
+						</div>
+					</div>
+					<div class="panel panel-danger" id="t2">
+						<div id="t2_2" class="task panel-heading panel-body">
+							Think about what devices can cause a particular error
+						</div>
+					</div>
+					<div class="panel panel-danger" id="t2">
+						<div id="t2_3" class="task panel-heading panel-body">
+							Think about what kind of events lead to a particular error
+						</div>
+					</div>
+					<div class="panel panel-danger" id="t3">
+						<div id="t3_1" class="task panel-heading panel-body">
+							Think and articulate which plausible cause to be tested now
+						</div>
+					</div>
+					<div class="panel panel-danger" id="t3">
+						<div id="t3_2" class="task panel-heading panel-body">
+							Think about how to reduce the problem space (may be by eliminating a device from further consideration)
+						</div>
+					</div>
+					<div class="panel panel-danger" id="t3">
+						<div id="t3_3" class="task panel-heading panel-body">
+							Thought about which hypothesis will lead me to a conclusive answer
+						</div>
+					</div>
+					<div class="panel panel-danger" id="t4">
+						<div id="t4_1" class="task panel-heading panel-body">
+							Plan for - how to verify whether a plausible cause is the actual cause of the error
+						</div>
+					</div>
+					<div class="panel panel-danger" id="t4">
+						<div id="t4_2" class="task panel-heading panel-body">
+							Thought about how a hypothesis can be proven correct or wrong
+						</div>
+					</div>
+					<div class="panel panel-danger" id="t5">
+						<div id="t5_1" class="task panel-heading panel-body">
+							Thought about what step to take next
+						</div>
+					</div>
+					<div class="panel panel-danger" id="t5">
+						<div id="t5_2" class="task panel-heading panel-body">
+							Thought about what information is missing
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-info">
+				<div class="panel-heading"> Competencies </div>
+				<div class="panel-body" id="competencies">
+					<div class="panel panel-warning" id="c1">
+						<div class="panel-heading        ">Problem Space Understanding</div>
+						<div class="panel-body"  >
+							<div id="cb1" class="panel panel-danger panel-heading panel-body"></div>
+						</div>
+					</div>
+					<div class="panel panel-warning" id="c2">
+						<div class="panel-heading        ">Hypothesis Generation</div>
+						<div class="panel-body" >
+							<div id="cb2" class="panel panel-danger panel-heading panel-body"></div>
+						</div>
+					</div>
+					<div class="panel panel-warning" id="c3">
+						<div class="panel-heading        ">Hypothesis Prioritization</div>
+						<div class="panel-body" >
+							<div id="cb3" class="panel panel-danger panel-heading panel-body"></div>
+						</div>
+					</div>
+					<div class="panel panel-warning" id="c4">
+						<div class="panel-heading        ">Design &amp; Run Test</div>
+						<div class="panel-body" >
+							<div id="cb4" class="panel panel-danger panel-heading panel-body"></div>
+						</div>
+					</div>
+					<div class="panel panel-warning" id="c5">
+						<div class="panel-heading        ">Result Interpretation</div>
+						<div class="panel-body" >
+							<div id="cb5" class="panel panel-danger panel-heading panel-body"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(init);
+		//shuffle
+		$(function () {
+			var parent = $("#tasks");
+			var divs = parent.children();
+			while (divs.length) {
+				parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
+			}
+		});
+		function init() {
+
+			$('<div id="slot1"></div>').appendTo('#cb1').droppable({
+				accept: '#t1 div',
+				hoverClass: 'hovered',
+				drop: function(event, ui) {
+					ui.draggable.css({
+						top: 0,
+						left: 0
+					}).appendTo(this);
+				}
+			}).sortable();
+			$('#t1').droppable({
+		    //accept: '#slot1 div',
+		    hoverClass: 'ui-state-highlight',
+		    drop: function(event, ui) {
+		    	ui.draggable.css({
+		    		top: 0,
+		    		left: 0
+		    	}).appendTo(this);
+		    }
+		});
+			$('<div id="slot1"></div>').appendTo('#cb2').droppable({
+				accept: '#t2 div',
+				hoverClass: 'hovered',
+				drop: function(event, ui) {
+					ui.draggable.css({
+						top: 0,
+						left: 0
+					}).appendTo(this);
+				}
+			}).sortable();
+			$('#t2').droppable({
+		    //accept: '#slot1 div',
+		    hoverClass: 'ui-state-highlight',
+		    drop: function(event, ui) {
+		    	ui.draggable.css({
+		    		top: 0,
+		    		left: 0
+		    	}).appendTo(this);
+		    }
+
+		});
+			$('<div id="slot1"></div>').appendTo('#cb3').droppable({
+				accept: '#t3 div',
+				hoverClass: 'hovered',
+				drop: function(event, ui) {
+					ui.draggable.css({
+						top: 0,
+						left: 0
+					}).appendTo(this);
+				}
+			}).sortable();
+			$('#t3').droppable({
+		    //accept: '#slot1 div',
+		    hoverClass: 'ui-state-highlight',
+		    drop: function(event, ui) {
+		    	ui.draggable.css({
+		    		top: 0,
+		    		left: 0
+		    	}).appendTo(this);
+		    }
+		});
+			$('<div id="slot1"></div>').appendTo('#cb4').droppable({
+				accept: '#t4 div',
+				hoverClass: 'hovered',
+				drop: function(event, ui) {
+					ui.draggable.css({
+						top: 0,
+						left: 0
+					}).appendTo(this);
+				}
+			}).sortable();
+			$('#t4').droppable({
+		    //accept: '#slot1 div',
+		    hoverClass: 'ui-state-highlight',
+		    drop: function(event, ui) {
+		    	ui.draggable.css({
+		    		top: 0,
+		    		left: 0
+		    	}).appendTo(this);
+		    }
+		});
+			$('<div id="slot1"></div>').appendTo('#cb5').droppable({
+				accept: '#t5 div',
+				hoverClass: 'hovered',
+				drop: function(event, ui) {
+					ui.draggable.css({
+						top: 0,
+						left: 0
+					}).appendTo(this);
+				}
+			}).sortable();
+			$('#t5').droppable({
+		    //accept: '#slot1 div',
+		    hoverClass: 'ui-state-highlight',
+		    drop: function(event, ui) {
+		    	ui.draggable.css({
+		    		top: 0,
+		    		left: 0
+		    	}).appendTo(this);
+		    }
+		});
+
+
+			$("#t1_1,#t1_2,#t2_1,#t2_2,#t2_3,#t3_1,#t3_2,#t3_3,#t4_1,#t4_2,#t5_1,#t5_2").draggable({
+				cursor: 'move',
+				revert: 'invalid',
+			});
+
+		}
+
+	</script>
+</body>
+
+</html>
